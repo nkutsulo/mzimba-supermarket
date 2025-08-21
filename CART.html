@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><Main>Mzimba Supermarket</Main></title>
+    <link rel="stylesheet" href="INDEX.css">
+</head>
+<body>
+    <header class="header">
+        <div>
+            <a href="http://www.mzimbasupermarket.co.za">http://www.mzimbasupermarket.co.za</a>
+        </div>
+        <div>
+            <input type="text" placeholder="Search">
+        </div>
+        <div>
+            <img src="cart-icon.png" alt="Cart" width="40">
+        </div>
+    </header>
+<div class="sidebar">
+    <a href="index.html">Home</a>
+    <A href="ABOUT US.html">About Us</a>
+    <a href="services.html">Services</a>
+  </div>
+
+    <main class="content">
+<div class="product-selector">
+    <h2>Items</h2>
+
+    <label for="products">Choose a product:</label>
+    <select id="products" onchange="showDescription()">
+      <option value="">-- Select an item --</option>
+      <option value="Fresh apples from local farms">Apple</option>
+      <option value="Whole grain bread, baked daily">Bread</option>
+      <option value="Full cream milk, 1L">Milk</option>
+      <option value="5kg long grain rice">Rice</option>
+      <option value="Powerful stain remover">maq washing powder</option>
+    </select>
+      <label>Product Description:</label>
+      <input type="text" id="productDesc">
+      <label>Price:</label>
+      <input type="text" id="productPrice">
+      <label>Quantity:</label>
+      <input type="number" id="productQty">
+    <button>ADD TO CART</button>
+    </div>
+
+
+        <section class="recommended">
+            <h3>Recommended Products</h3>
+
+            <div class="product-item">
+                <img src="domestos.png" alt="Domestos multipurpose stain remover">
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-item">
+                <img src="cerave.png" alt="Cerave moisturising lotion">
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-item">
+            <img src="douwe egberts.png" alt="Douwe Egberts pure gold coffee">
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+<div class="checkout-section">
+  <h2>🛒 Your Cart</h2>
+  <div id="cart-items">
+  </div>
+  <div class="cart-summary">
+    <p><strong>Subtotal:</strong> <span id="cart-total">R0,00</span></p>
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
+</div>
+<script src="JAVASCRIPT"></script>
+</body>
+</html>

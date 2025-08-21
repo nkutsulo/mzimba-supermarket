@@ -1,0 +1,142 @@
+const products = {
+  "Fresh apples from local farms": { price: 12.99, name: "Apple" },
+  "Whole grain bread, baked daily": { price: 18.50, name: "Bread" },
+  "Full cream milk, 1L": { price: 15.75, name: "Milk" },
+  "5kg long grain rice": { price: 89.99, name: "Rice" },
+  "Powerful stain remover": { price: 45.00, name: "MAQ Washing Powder" }
+};
+
+const recommendedProducts = {
+  "Domestos multipurpose stain remover": 39.99,
+  "Cerave moisturising lotion": 129.99,
+  "Douwe Egberts pure gold coffee": 89.99
+};
+
+let cart = [];
+
+function showDescription() {
+  const select = document.getElementById('products');
+  const descInput = document.getElementById('productDesc');
+  const priceInput = document.getElementById('productPrice');
+  const selectedOption = select.options[select.selectedIndex];
+  
+  if (selectedOption.value) {
+    descInput.value = selectedOption.value;
+    priceInput.value = 'R' + products[selectedOption.value].price.toFixed(2);
+  } else {
+    descInput.value = '';
+    priceInput.value = '';
+  }
+}
+
+function addToCart() {
+  const select = document.getElementById('products');
+  const qtyInput = document.getElementById('productQty');
+  const selectedOption = select.options[select.selectedIndex];
+  
+  if (!selectedOption.value) {
+    alert('Please select a product first');
+    return;
+  }
+  
+  const quantity = parseInt(qtyInput.value) || 1;
+  if (quantity <= 0) {
+    alert('Please enter a valid quantity');
+    return;
+  }
+  
+  const product = products[selectedOption.value];
+  const existingItem = cart.find(item => item.description === selectedOption.value);
+  
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.push({
+      name: product.name,
+      description: selectedOption.value,
+      price: product.price,
+      quantity: quantity
+    });
+  }
+  
+  updateCartDisplay();
+  select.selectedIndex = 0;
+  document.getElementById('productDesc').value = '';
+  document.getElementById('productPrice').value = '';
+  qtyInput.value = '';
+}
+
+function updateCartDisplay() {
+  const cartItemsElement = document.getElementById('cart-items');
+  const cartTotalElement = document.getElementById('cart-total');
+  
+  cartItemsElement.innerHTML = '';
+  
+  if (cart.length === 0) {
+    cartItemsElement.innerHTML = '<p>Your cart is empty</p>';
+    cartTotalElement.textContent = 'R0.00';
+    return;
+  }
+  
+  let total = 0;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+    
+    const itemElement = document.createElement('div');
+    itemElement.className = 'cart-item';
+    itemElement.innerHTML = `
+      <p><strong>${item.name}</strong> (${item.quantity})</p>
+      <p>${item.description}</p>
+      <p>R${item.price.toFixed(2)} each = R${itemTotal.toFixed(2)}</p>
+      <button onclick="removeCartItem('${item.description}')">Remove</button>
+    `;
+    cartItemsElement.appendChild(itemElement);
+  });
+  
+  cartTotalElement.textContent = 'R' + total.toFixed(2);
+}
+
+function removeCartItem(description) {
+  cart = cart.filter(item => item.description !== description);
+  updateCartDisplay();
+}
+
+function placeOrder() {
+  if (cart.length === 0) {
+    alert('Your cart is empty. Please add items before placing an order.');
+    return;
+  }
+  
+  alert('Order placed successfully! Thank you for shopping with Mzimba Supermarket.');
+  cart = [];
+  updateCartDisplay();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const recommendedButtons = document.querySelectorAll('.recommended button');
+  recommendedButtons.forEach((button, index) => {
+    button.addEventListener('click', function() {
+      const productNames = Object.keys(recommendedProducts);
+      const productName = productNames[index];
+      const productPrice = recommendedProducts[productName];
+      
+      const existingItem = cart.find(item => item.description === productName);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          name: productName.split(' ')[0], 
+          description: productName,
+          price: productPrice,
+          quantity: 1
+        });
+      }
+      
+      updateCartDisplay();
+    });
+  });
+  
+  updateCartDisplay();
+});
